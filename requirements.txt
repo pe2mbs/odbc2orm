@@ -1,0 +1,5 @@
+Mako
+pyodbc
+PyYAML
+twine
+wheel

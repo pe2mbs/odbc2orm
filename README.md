@@ -15,20 +15,27 @@ See LICENCE file for the GNU GENERAL PUBLIC LICENSE, Version 2, June 1991
 ```
 
 ## Options
--v                      Verbose output.
+The vollowing options are available at command line. 
 
--h/--help               This help information.
+    -v                      Verbose output.
 
--o/--output <filename>  write Python code file, instead of stdout.
-                        default STDOUT   
+    -V/--version            version output 
 
--c/--config <filename>  Configure driver, output and template files.
+    -h/--help               This help information.
+   
+    -o/--output <filename>  write Python code file, instead of stdout.
+                            default STDOUT   
+    
+    -c/--config <filename>  Configure driver, output and template files.
 
--d/--driver <driver>    The ODBC driver to be used,
-                        default "Microsoft Access Driver (*.mdb, *.accdb)"
+    -d/--driver <driver>    The ODBC driver to be used,
+                            default "Microsoft Access Driver (*.mdb, *.accdb)"
 
--t/--template <folder>  Create template files and configuration YAML file
-                        for personal customizing.                         
+    -t/--template <folder>  Create template files and configuration YAML file
+                            for personal customizing.                         
+
+When using a configuration file --output and --driver may override the configuration 
+by setting those after the configuration option.
 
 # Configuration 
 A default configuration file can be created through the --template option.
@@ -48,6 +55,10 @@ The 'template' section are the Mako template files to generate the ORM schema
 Python file.
 
 # Templates
+By using the --template command line option the standard templates and configuration
+is exported to a specified folder. This gives the opportunity to customize the generation
+of the output of the application.
+
 ## leadin and leadout
 The leadin and leadout templates receive the following variables;
 * config; dictionary with configuration as being used during generation.

@@ -37,6 +37,7 @@ and you are welcome to redistribute under GNU General Public License, version 2 
 
 
 def usage():
+    banner()
     print(f"""
 Syntex:
     odbc2orm <options> <ODBC database>
@@ -62,10 +63,8 @@ def main():
     output_stream = sys.stdout
     odbc_connection = None
     try:
-
-        banner()
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "ho:c:vlt:", ["help", "licence", "output=", "config=", "template=" ] )
+            opts, args = getopt.getopt(sys.argv[1:], "ho:c:vlt:V", ["help", "licence", "output=", "config=", "template=", "version" ] )
 
         except getopt.GetoptError as err:
             # print help information and exit:
@@ -82,7 +81,12 @@ def main():
                 usage()
                 sys.exit()
 
+            elif o in ("-V", "--version"):
+                print( f"{info.version}" )
+                sys.exit()
+
             elif o in ("-t", "--template"):
+                banner()
                 create_template_config( a )
                 sys.exit()
 
@@ -123,6 +127,7 @@ def main():
         else:
             assert False, "No database filename given."
 
+        banner()
         driver = API.CONFIG.get('driver', driver)
         odbc_connection = pyodbc.connect(f"Driver={{{driver}}};DBQ={database_filename};")
 
