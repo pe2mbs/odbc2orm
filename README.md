@@ -6,7 +6,9 @@ the target project extra packages may be needed (see **Required packages for tar
 
 
 # Licence
-This package is under GNU GENERAL PUBLIC LICENSE, Version 2 only
+This package is under GNU GENERAL PUBLIC LICENSE, Version 2 only. 
+Therefore article 9 of "GNU GENERAL PUBLIC LICENSE, Version 2, June 1991" does not apply. 
+
 See LICENCE file for the GNU GENERAL PUBLIC LICENSE, Version 2, June 1991
 
 
@@ -138,3 +140,88 @@ The OdbcColumn object contains the column properies;
 * **ordina**l; integer same as **ordinal_position**.
 
 For some databases there are more properies available, those are not supported.
+
+# Typical output
+The following is a simple example of the output the odbc2orm tool shall generate with the 
+default builtin templates.
+
+    #
+    # This file was created by odbc2orm.py 1.0.0 Copyright (C) 2023 Marc Bertens-Nguyen
+    # odbc2orm.py comes with ABSOLUTELY NO WARRANTY. This is free software,
+    # and you are welcome to redistribute under GNU General Public License, version 2 only
+    #
+    # Source file created: username at 2023-04-16 15:06:57
+    #
+    from typing import Optional
+    from sqlalchemy import engine, create_engine
+    from sqlalchemy import Column, String, Integer, Text, Boolean, DECIMAL, FLOAT
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import sessionmaker
+    
+    
+    Base = declarative_base()
+    
+    
+    class SomeTable( Base ):
+        __tablename__            = 'SomeTable'
+        Id                       = Column( Integer, primary_key = True )
+        Name                     = Column( String( 50 ), nullable = True )
+        Description              = Column( String( 255 ), nullable = True )
+        Filename                 = Column( String( 200 ), nullable = True )
+        DataFormat               = Column( Integer, nullable = True )
+    
+        def __repr__(self):
+            return f"<SomeTable {self.Id}, Name = '{self.Name}', Description = '{self.Description}', Filename = '{self.Filename}'>"
+
+
+    __engine = None
+    __session = None
+    __connection = None
+    
+    
+    def getEngine( database: Optional[str] = None ):
+        driver = 'Microsoft Access Driver (*.mdb, *.accdb)'
+        if not database:
+            # This the file with this file was created.
+            database = 'G:\emagic\equens.mdb'
+    
+        connection_string = f"DRIVER={{{driver}}};DBQ={database};;ExtendedAnsiSQL=1;"
+        connection_url = engine.URL.create( "access+pyodbc",
+                                            query = { "odbc_connect": connection_string } )
+        global __engine, __connection
+        __engine = create_engine( connection_url )
+        __connection = __engine.connect()
+        return __connection
+    
+    
+    def getConnection():
+        global __connection
+        return __connection
+    
+    
+    def getSession():
+        global __engine, __session
+        if not __engine:
+            raise Exception( "Connection not opened yet." )
+    
+        if __session:
+            return __session
+    
+        SessionObject = sessionmaker( bind = __engine )
+        __session = SessionObject()
+        return __session
+    
+    
+    def dump_tables():
+        getEngine()
+        session = getSession()
+        # Dump contents of table 'FileTp1'
+        for rec in session.query( FileTp1 ).all():
+            print( rec )
+
+        return
+    
+    
+    if __name__ == '__main__':
+        dump_tables()
+    

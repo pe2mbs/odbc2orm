@@ -13,11 +13,10 @@ class BinaryDistribution( Distribution ):
 
 
 setup(  name                = 'odbc2orm',
-        version             = '1.0.0',
+        version             = '1.0.5',
         description         = 'Convert ODBC schema to ORM',
-        long_description    = """This package convert an ODBC schema into a sqlalchemy ORM schema.
-Its primary written for MS Access schemas, but it should work for all ODBC 
-relational databases.""",
+        long_description    = open("README.md","r" ).read(),
+        long_description_content_type = 'text/markdown',
         author              = 'Marc Bertens-Nguyen',
         author_email        = 'm.bertens@pe2mbs.nl',
         url                 = 'https://github.com/pe2mbs/odbc2orm',
@@ -27,7 +26,7 @@ relational databases.""",
         classifiers         = [ 'Environment :: Console',
                                 'Operating System :: Microsoft :: Windows',
                                 'Intended Audience :: Developers',
-                                'License :: GNU GENERAL PUBLIC LICENSE v2',
+                                "License :: OSI Approved :: GNU General Public License (GPL)",
                                 'Programming Language :: Python :: 3', ],
         distclass           = BinaryDistribution,
         keywords            = 'odbc sqlalchemu orm',
