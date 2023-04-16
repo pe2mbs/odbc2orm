@@ -4,7 +4,14 @@ import yaml
 import odbc2orm.config
 
 
-leadin = """
+leadin = """#
+# This file was created by odbc2orm.py ${version} Copyright (C) ${copyright} ${author}
+# odbc2orm.py comes with ABSOLUTELY NO WARRANTY. This is free software,
+# and you are welcome to redistribute under GNU General Public License, version 2 only
+#
+# Source file created: ${username} at ${datetime.now().strftime( '%Y-%m-%d %H:%M:%S' )}
+# from ${database} with driver ${config.get( 'driver', 'unknown' )} 
+#
 from typing import Optional
 import pyodbc
 from sqlalchemy import Column, String, Integer, Text, Boolean, DECIMAL, FLOAT

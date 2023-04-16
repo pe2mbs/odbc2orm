@@ -1,5 +1,7 @@
 Mako
 pyodbc
-PyYAML
+pyyaml
 twine
 wheel
+sqlalchemy
+sqlalchemy-access

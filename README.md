@@ -146,11 +146,12 @@ The following is a simple example of the output the odbc2orm tool shall generate
 default builtin templates.
 
     #
-    # This file was created by odbc2orm.py 1.0.0 Copyright (C) 2023 Marc Bertens-Nguyen
+    # This file was created by odbc2orm.py 1.0.5 Copyright (C) 2023 Marc Bertens-Nguyen
     # odbc2orm.py comes with ABSOLUTELY NO WARRANTY. This is free software,
     # and you are welcome to redistribute under GNU General Public License, version 2 only
     #
     # Source file created: username at 2023-04-16 15:06:57
+    # from test-database.mdb with driver Microsoft Access Driver (*.mdb, *.accdb)
     #
     from typing import Optional
     from sqlalchemy import engine, create_engine
