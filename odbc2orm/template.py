@@ -5,12 +5,14 @@ import odbc2orm.config
 
 
 leadin = """
+from typing import Optional
+import pyodbc
 from sqlalchemy import Column, String, Integer, Text, Boolean, DECIMAL, FLOAT
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 
 Base = declarative_base()
-
 
 
 """
@@ -61,6 +63,58 @@ def fields2repr( columns ):
 """
 
 leadout = """
+__engine = None
+__session = None
+__connection = None
+
+
+def getEngine( database: Optional[str] = None ):
+    driver = '${ config.get('driver','' ) }'
+    if not datanase:
+        # This the file with this file was created. 
+        database = '${database}'
+          
+    connection_string = f"DRIVER={{{driver}}};DBQ={database};;ExtendedAnsiSQL=1;"
+    connection_url = engine.URL.create( "access+pyodbc",
+                                        query = { "odbc_connect": connection_string } )
+    __engine = create_engine( connection_url )
+    __connection = __engine.connect()  
+    return __connection 
+
+
+def getConnection():
+    return __connection
+
+
+def getSession():
+    if not __engine:
+        raise Exception( "Connection not opened yet." )
+
+    if __session:
+        return __session
+
+    SessionObject = sessionmaker( bind = dbengine )
+    __session = SessionObject()
+    return __session
+
+
+%if config.get( 'include_dump', False ):
+def dump_tables():
+    getEngine()
+    session = getSession()
+%for table in tables:
+    # Dump contents of table '${table.name}'
+    for rec in session.query( ${table.name.replace(' ','_')} ).all():
+        print( rec )
+
+%endfor
+    return
+
+
+if __name__ == '__main__':
+    dump_tables()
+
+%endif
 """
 
 
@@ -74,7 +128,8 @@ def create_template_config( folder ):
             "leadout": os.path.join( folder, 'template', 'leadout.templ' )
         },
         "driver": odbc2orm.config.DEFAULT_DRIVER,
-        "verbose": False
+        "verbose": False,
+        "include_dump": False,
     }
     module = sys.modules[ __name__ ]
     os.makedirs( os.path.join( folder, 'template' ), exist_ok=True )

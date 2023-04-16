@@ -64,7 +64,7 @@ def main():
     odbc_connection = None
     try:
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "ho:c:vlt:V", ["help", "licence", "output=", "config=", "template=", "version" ] )
+            opts, args = getopt.getopt(sys.argv[1:], "ho:c:vlt:VD", ["help", "licence", "output=", "config=", "template=", "version", "dump" ] )
 
         except getopt.GetoptError as err:
             # print help information and exit:
@@ -73,6 +73,7 @@ def main():
             sys.exit(2)
 
         driver = API.DEFAULT_DRIVER
+        dump = False
         for o, a in opts:
             if o == "-v":
                 API.CONFIG['verbose'] = True
@@ -92,6 +93,9 @@ def main():
 
             elif o in ("-d", "--driver"):
                 driver = a
+
+            elif o in ("-D", "--dump"):
+                dump = True
 
             elif o in ("-o", "--output"):
                 output_stream = open(a, 'wt')
@@ -120,7 +124,8 @@ def main():
             else:
                 assert False, "unhandled option"
 
-        API.CONFIG['verbose'] = False if output_stream == sys.stdout else API.CONFIG.get('verbose', False)
+        API.CONFIG[ 'include_dump' ] = dump
+        API.CONFIG[ 'verbose' ] = False if output_stream == sys.stdout else API.CONFIG.get('verbose', False)
         if len(args):
             database_filename = args[0]
 
@@ -129,9 +134,9 @@ def main():
 
         banner()
         driver = API.CONFIG.get('driver', driver)
-        odbc_connection = pyodbc.connect(f"Driver={{{driver}}};DBQ={database_filename};")
 
-        convert(odbc_connection, output_stream)
+
+        convert( driver, database_filename, output_stream )
 
     except SystemExit:
         pass

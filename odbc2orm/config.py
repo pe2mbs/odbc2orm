@@ -10,5 +10,6 @@ CONFIG = {
         "leadout": None
     },
     "driver": DEFAULT_DRIVER,
-    "verbose": False
+    "verbose": False,
+    "include_dump": False,
 }
