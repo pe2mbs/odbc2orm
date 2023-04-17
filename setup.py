@@ -11,15 +11,17 @@ class BinaryDistribution( Distribution ):
     def is_pure( self ):
         return True
 
+from odbc2orm.version import version, author, author_email
+
 
 setup(  name                = 'odbc2orm',
-        version             = '1.0.5',
+        version             = version,
         description         = 'Convert ODBC schema to ORM',
         long_description    = open("README.md","r" ).read(),
         long_description_content_type = 'text/markdown',
-        author              = 'Marc Bertens-Nguyen',
+        author              = author,
         author_email        = 'm.bertens@pe2mbs.nl',
-        url                 = 'https://github.com/pe2mbs/odbc2orm',
+        url                 = author_email,
         install_requires    = [ 'PyYAML',
                                 'pyodbc',
                                 'Mako'],
@@ -32,7 +34,7 @@ setup(  name                = 'odbc2orm',
         keywords            = 'odbc sqlalchemu orm',
         packages            = find_packages( exclude = [ 'custom',
                                                      'template' ] ),
-        python_requires     = '>3',
+        python_requires     = '>=3.6',
         entry_points        = {  # Optional
             'console_scripts': [
                 'odbc2orm=odbc2orm.__main__:main',

@@ -15,7 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-version     = '1.0.0'
-date        = '13-02-2023'
-copyright   ='2023'
-author      = 'Marc Bertens-Nguyen'
+version         = '1.0.7'
+date            = '17-02-2023'
+copyright       = '2023'
+author          = 'Marc Bertens-Nguyen'
+author_email    = 'https://github.com/pe2mbs/odbc2orm'

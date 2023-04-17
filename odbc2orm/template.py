@@ -13,7 +13,7 @@ leadin = """#
 # from ${database} with driver ${config.get( 'driver', 'unknown' )} 
 #
 from typing import Optional
-import pyodbc
+from sqlalchemy import engine, create_engine
 from sqlalchemy import Column, String, Integer, Text, Boolean, DECIMAL, FLOAT
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -72,35 +72,31 @@ def fields2repr( columns ):
 leadout = """
 __engine = None
 __session = None
-__connection = None
 
 
 def getEngine( database: Optional[str] = None ):
     driver = '${ config.get('driver','' ) }'
-    if not datanase:
+    if not database:
         # This the file with this file was created. 
         database = '${database}'
           
     connection_string = f"DRIVER={{{driver}}};DBQ={database};;ExtendedAnsiSQL=1;"
     connection_url = engine.URL.create( "access+pyodbc",
                                         query = { "odbc_connect": connection_string } )
-    __engine = create_engine( connection_url )
-    __connection = __engine.connect()  
-    return __connection 
-
-
-def getConnection():
-    return __connection
+    global __engine
+    __engine = create_engine( connection_url ) 
+    return __engine
 
 
 def getSession():
+    global __engine, __session
     if not __engine:
         raise Exception( "Connection not opened yet." )
 
     if __session:
         return __session
 
-    SessionObject = sessionmaker( bind = dbengine )
+    SessionObject = sessionmaker( bind = __engine )
     __session = SessionObject()
     return __session
 

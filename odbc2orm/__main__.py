@@ -53,6 +53,7 @@ Options:
 -c/--config <filename>  Configure driver, output and template files.
 -d/--driver <driver>    The ODBC driver to be used,
                         default "Microsoft Access Driver (*.mdb, *.accdb)"
+-D/--dump               Include dump function in output file.                         
 -t/--template <folder>  Create template files and configuration YAML file
                         for personal customizing.                         
 """)
